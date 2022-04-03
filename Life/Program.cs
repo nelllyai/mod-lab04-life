@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace cli_life
 {
@@ -35,17 +37,17 @@ namespace cli_life
         public int Width { get { return Columns * CellSize; } }
         public int Height { get { return Rows * CellSize; } }
 
-        public Board(int width, int height, int cellSize, double liveDensity = .1)
+        public Board(Parameters parameters)
         {
-            CellSize = cellSize;
+            CellSize = parameters.cellSize;
 
-            Cells = new Cell[width / cellSize, height / cellSize];
+            Cells = new Cell[parameters.width / parameters.cellSize, parameters.height / parameters.cellSize];
             for (int x = 0; x < Columns; x++)
                 for (int y = 0; y < Rows; y++)
                     Cells[x, y] = new Cell();
 
             ConnectNeighbors();
-            Randomize(liveDensity);
+            Randomize(parameters.liveDensity);
         }
 
         readonly Random rand = new Random();
@@ -86,16 +88,60 @@ namespace cli_life
             }
         }
     }
+
+    public class Parameters
+    {
+        struct Data
+        {
+            public int height { get; set; }
+            public int width { get; set; }
+            public int cellSize { get; set; }
+            public double liveDensity { get; set; }
+        }
+
+        Data newdata;
+        public int height
+        {
+            get { return newdata.height; }
+        }
+        public int width
+        {
+            get { return newdata.width; }
+        }
+        public int cellSize
+        {
+            get { return newdata.cellSize; }
+        }
+        public double liveDensity
+        {
+            get { return newdata.liveDensity; }
+        }
+        public void LoadParameters(string jsonPath)
+        {
+            newdata = JsonConvert.DeserializeObject<Data>(File.ReadAllText(jsonPath));
+        }
+
+        public void LoadFile(Board board, string filePath)
+        {
+            string state = File.ReadAllText(filePath);
+
+            for (int i = 0; i < state.Length; i++)
+            {
+
+            }
+        }
+    }
+
     class Program
     {
         static Board board;
         static private void Reset()
         {
-            board = new Board(
-                width: 50,
-                height: 20,
-                cellSize: 1,
-                liveDensity: 0.5);
+            Parameters parameters = new Parameters();
+            parameters.LoadParameters(@"Parameters.json");
+
+            board = new Board(parameters);
+            //LoadFromFile(board, "F:\\new.txt");
         }
         static void Render()
         {
@@ -118,13 +164,70 @@ namespace cli_life
         }
         static void Main(string[] args)
         {
+            int counter = 0;
+
             Reset();
-            while(true)
+            while (true)
             {
                 Console.Clear();
                 Render();
                 board.Advance();
+                counter++;
                 Thread.Sleep(1000);
+
+                //if (counter == 20)
+                //{
+                //    SaveFile(board, ".\\Colonies\\colony5.txt");
+                //}
+            }
+        }
+
+        static void SaveFile(Board board, string filePath)
+        {
+            string state = string.Empty;
+
+            for (int row = 0; row < board.Rows; row++)
+            {
+                for (int col = 0; col < board.Columns; col++)
+                {
+                    bool cellIsAlive = board.Cells[col, row].IsAlive;
+
+                    if (cellIsAlive) state += '*';
+                    else state += ' ';
+                }
+                state += '\n';
+            }
+
+            File.WriteAllText(filePath, state);
+        }
+
+        static void LoadFromFile(Board board, string filePath)
+        {
+            string state = File.ReadAllText(filePath);
+
+            int col = 0, row = 0;
+            bool toFill = true;
+
+            foreach (char c in state)
+            {
+                if (row >= board.Rows) return;
+                if (col >= board.Columns) toFill = false;
+
+                if (c == '\n')
+                {
+                    row++;
+                    col = -1;
+                    toFill = true;
+                }
+                else if (c == ' ' && toFill)
+                {
+                    board.Cells[col, row].IsAlive = false;
+                }
+                else if (toFill)
+                {
+                    board.Cells[col, row].IsAlive = true;
+                }
+                col++;
             }
         }
     }
