@@ -27,7 +27,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test1.txt");
+            board.LoadFromFile("Colonies/test1.txt");
 
             int counter = 0;
 
