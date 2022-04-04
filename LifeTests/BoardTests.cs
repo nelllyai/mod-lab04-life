@@ -46,7 +46,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -67,7 +67,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -88,7 +88,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -109,7 +109,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -130,7 +130,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -151,7 +151,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -172,7 +172,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -193,7 +193,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -214,7 +214,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -235,7 +235,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
@@ -256,7 +256,7 @@ namespace cli_life.Tests
             Parameters parameters = new Parameters();
             parameters.LoadParameters(@"Parameters.json");
             Board board = new Board(parameters);
-            board.LoadFromFile(".\\Colonies\\test2.txt");
+            board.LoadFromFile("Colonies/test2.txt");
 
             int counter = 0;
 
