@@ -31,6 +31,7 @@ namespace cli_life
     {
         public readonly Cell[,] Cells;
         public readonly int CellSize;
+        public readonly int MaxCounter;
 
         public int Columns { get { return Cells.GetLength(0); } }
         public int Rows { get { return Cells.GetLength(1); } }
@@ -40,6 +41,7 @@ namespace cli_life
         public Board(Parameters parameters)
         {
             CellSize = parameters.cellSize;
+            MaxCounter = parameters.maxCounter;
 
             Cells = new Cell[parameters.width / parameters.cellSize, parameters.height / parameters.cellSize];
             for (int x = 0; x < Columns; x++)
@@ -87,6 +89,246 @@ namespace cli_life
                 }
             }
         }
+        public int GetAliveCells()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int col = 0; col < Columns; col++)
+                {
+                    if (Cells[col, row].IsAlive) counter++;
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetDeadCells()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int col = 0; col < Columns; col++)
+                {
+                    if (!Cells[col, row].IsAlive) counter++;
+                }
+            }
+
+            return counter;
+        }
+
+        public double GetDensity()
+        {
+            double density = (double)GetAliveCells() / (GetAliveCells() + GetDeadCells());
+            return density;
+        }
+
+        public int GetNumberOfBlocks()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows - 2; row++)
+            {
+                for (int col = 0; col < Columns - 2; col++)
+                {
+                    if (Cells[col, row].IsAlive && Cells[col, row + 1].IsAlive && Cells[col + 1, row].IsAlive && Cells[col + 1, row + 1].IsAlive)
+                    {
+                        if (!Cells[col - 1, row - 1].IsAlive && !Cells[col, row - 1].IsAlive && !Cells[col + 1, row - 1].IsAlive && !Cells[col + 2, row - 1].IsAlive)
+                        {
+                            if (!Cells[col - 1, row].IsAlive && !Cells[col + 2, row].IsAlive && !Cells[col - 1, row + 2].IsAlive && !Cells[col + 2, row + 2].IsAlive)
+                            {
+                                if (!Cells[col - 1, row + 2].IsAlive && !Cells[col, row + 2].IsAlive && !Cells[col + 1, row + 2].IsAlive && !Cells[col + 2, row + 2].IsAlive)
+                                {
+                                    counter++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetNumberOfBoxes()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows - 2; row++)
+            {
+                for (int col = 1; col < Columns - 1; col++)
+                {
+                    if (Cells[col, row].IsAlive && Cells[col - 1, row + 1].IsAlive && Cells[col + 1, row + 1].IsAlive && Cells[col, row + 2].IsAlive)
+                    {
+                        if (!Cells[col, row + 1].IsAlive && !Cells[col - 1, row].IsAlive && !Cells[col + 1, row].IsAlive && !Cells[col - 1, row + 2].IsAlive && !Cells[col + 1, row + 2].IsAlive)
+                        {
+                            counter++;
+                        }
+                    }
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetNumberOfBoats()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows - 2; row++)
+            {
+                for (int col = 1; col < Columns - 1; col++)
+                {
+                    if (Cells[col, row].IsAlive && Cells[col - 1, row + 1].IsAlive && Cells[col + 1, row + 1].IsAlive && Cells[col, row + 2].IsAlive && Cells[col + 1, row + 2].IsAlive)
+                    {
+                        if (!Cells[col, row + 1].IsAlive && !Cells[col - 1, row].IsAlive && !Cells[col + 1, row].IsAlive && !Cells[col - 1, row + 2].IsAlive)
+                        {
+                            counter++;
+                        }
+                    }
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetNumberOfShips()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows - 2; row++)
+            {
+                for (int col = 1; col < Columns - 1; col++)
+                {
+                    if (Cells[col, row].IsAlive && Cells[col - 1, row + 1].IsAlive && Cells[col + 1, row + 1].IsAlive && Cells[col, row + 2].IsAlive && Cells[col + 1, row + 2].IsAlive && Cells[col - 1, row].IsAlive)
+                    {
+                        if (!Cells[col, row + 1].IsAlive && !Cells[col + 1, row].IsAlive && !Cells[col - 1, row + 2].IsAlive)
+                        {
+                            counter++;
+                        }
+                    }
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetNumberOfHives()
+        {
+            int counter = 0;
+
+            for (int row = 0; row < Rows - 3; row++)
+            {
+                for (int col = 1; col < Columns - 1; col++)
+                {
+                    if (Cells[col, row].IsAlive && Cells[col - 1, row + 1].IsAlive && Cells[col - 1, row + 2].IsAlive && Cells[col, row + 3].IsAlive && Cells[col + 1, row + 1].IsAlive && Cells[col + 1, row + 2].IsAlive)
+                    {
+                        if (!Cells[col, row + 1].IsAlive && !Cells[col, row + 2].IsAlive && !Cells[col - 1, row].IsAlive && !Cells[col + 1, row].IsAlive && !Cells[col - 1, row + 3].IsAlive && !Cells[col + 1, row + 3].IsAlive)
+                        {
+                            counter++;
+                        }
+                    }
+                }
+            }
+
+            return counter;
+        }
+
+        public int GetSymmetricalFigures()
+        {
+            return GetNumberOfBlocks() + GetNumberOfBoxes() + GetNumberOfHives();
+        }
+
+        public bool IsXSymmetrical()
+        {
+            if ((int)Rows / 2 != (double)Rows / 2) return false;
+
+            for (int row = 0; row < Rows / 2; row++)
+            {
+                for (int col = 0; col < Columns; col++)
+                {
+                    if (Cells[col, row].IsAlive != Cells[col, row + Rows / 2].IsAlive)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool IsYSymmetrical()
+        {
+            if ((int)Columns / 2 != (double)Columns / 2) return false;
+
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int col = 0; col < Columns / 2; col++)
+                {
+                    if (Cells[col, row].IsAlive != Cells[col + Columns / 2, row].IsAlive)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public bool ToContinue(int counter)
+        {
+            if (counter < MaxCounter) return true;
+            return false;
+        }
+
+        public void LoadFromFile(string filePath)
+        {
+            string state = File.ReadAllText(filePath);
+            
+
+            int col = 0, row = 0;
+            bool toFill = true;
+
+            foreach (char c in state)
+            {
+                if (row >= Rows) return;
+                if (col >= Columns) toFill = false;
+
+                if (c == '\n')
+                {
+                    if (col < Columns - 1)
+                    {
+                        for (col = col + 1; col < Columns; col++)
+                        {
+                            Cells[col, row].IsAlive = false;
+                        }
+                    }
+                    row++;
+                    col = -1;
+                    toFill = true;
+                }
+                else if (c == ' ' && toFill)
+                {
+                    Cells[col, row].IsAlive = false;
+                }
+                else if (c == '*' && toFill)
+                {
+                    Cells[col, row].IsAlive = true;
+                }
+                col++;
+            }
+
+            if (row < Rows - 1)
+            {
+                for (row = row + 1; row < Rows; row++)
+                {
+                    for (col = 0; col < Columns; col++)
+                        Cells[col, row].IsAlive = false;
+                }
+            }
+        }
     }
 
     public class Parameters
@@ -97,6 +339,7 @@ namespace cli_life
             public int width { get; set; }
             public int cellSize { get; set; }
             public double liveDensity { get; set; }
+            public int maxCounter { get; set; }
         }
 
         Data newdata;
@@ -116,19 +359,13 @@ namespace cli_life
         {
             get { return newdata.liveDensity; }
         }
+        public int maxCounter
+        {
+            get { return newdata.maxCounter; }
+        }
         public void LoadParameters(string jsonPath)
         {
             newdata = JsonConvert.DeserializeObject<Data>(File.ReadAllText(jsonPath));
-        }
-
-        public void LoadFile(Board board, string filePath)
-        {
-            string state = File.ReadAllText(filePath);
-
-            for (int i = 0; i < state.Length; i++)
-            {
-
-            }
         }
     }
 
@@ -141,7 +378,7 @@ namespace cli_life
             parameters.LoadParameters(@"Parameters.json");
 
             board = new Board(parameters);
-            //LoadFromFile(board, "F:\\new.txt");
+            board.LoadFromFile(".\\Colonies\\colony4.txt");
         }
         static void Render()
         {
@@ -165,21 +402,84 @@ namespace cli_life
         static void Main(string[] args)
         {
             int counter = 0;
+            string state = string.Empty;
+            bool isStable = false;
 
             Reset();
-            while (true)
+            while (!isStable)
             {
                 Console.Clear();
                 Render();
-                board.Advance();
-                counter++;
-                Thread.Sleep(1000);
+                
+                if (GetState(board) == state)
+                {
+                    isStable = true;
+                    Console.WriteLine("The number of generations to transition to a stable phase: " + counter);
+                    GetFullInfo(board);
+                }
+                state = GetState(board);
+                
+                if (!board.ToContinue(counter))
+                {
+                    SaveFile(board, ".\\Colonies\\newColony.txt");
+                    Console.WriteLine("Number of generations: " + counter);
+                    GetFullInfo(board);
+                    return;
+                }
 
-                //if (counter == 20)
-                //{
-                //    SaveFile(board, ".\\Colonies\\colony5.txt");
-                //}
+                counter++;
+                board.Advance();
+                Thread.Sleep(2000);
             }
+        }
+
+        static void GetFullInfo(Board board)
+        {
+            Console.WriteLine("Number of alive cells:  " + board.GetAliveCells());
+            Console.WriteLine("Number of dead cells:   " + board.GetDeadCells());
+            Console.WriteLine("Density of alive cells: " + board.GetDensity());
+            if (board.IsXSymmetrical())
+            {
+                Console.WriteLine("System is symmetrical by X.");
+            }
+            else
+            {
+                Console.WriteLine("System is not symmetrical by X.");
+            }
+            if (board.IsYSymmetrical())
+            {
+                Console.WriteLine("System is symmetrical by Y.");
+            }
+            else
+            {
+                Console.WriteLine("System is not symmetrical by Y.");
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Number of blocks: " + board.GetNumberOfBlocks());
+            Console.WriteLine("Number of hives:  " + board.GetNumberOfHives());
+            Console.WriteLine("Number of boxes:  " + board.GetNumberOfBoxes());
+            Console.WriteLine("Number of boats:  " + board.GetNumberOfBoats());
+            Console.WriteLine("Number of ships:  " + board.GetNumberOfShips());
+            Console.WriteLine("Number of symmetrical figures: " + board.GetSymmetricalFigures());
+        }
+        static string GetState(Board board)
+        {
+            string state = string.Empty;
+
+            for (int row = 0; row < board.Rows; row++)
+            {
+                for (int col = 0; col < board.Columns; col++)
+                {
+                    bool cellIsAlive = board.Cells[col, row].IsAlive;
+
+                    if (cellIsAlive) state += '*';
+                    else state += ' ';
+                }
+                state += '\n';
+            }
+
+            return state;
         }
 
         static void SaveFile(Board board, string filePath)
@@ -199,36 +499,6 @@ namespace cli_life
             }
 
             File.WriteAllText(filePath, state);
-        }
-
-        static void LoadFromFile(Board board, string filePath)
-        {
-            string state = File.ReadAllText(filePath);
-
-            int col = 0, row = 0;
-            bool toFill = true;
-
-            foreach (char c in state)
-            {
-                if (row >= board.Rows) return;
-                if (col >= board.Columns) toFill = false;
-
-                if (c == '\n')
-                {
-                    row++;
-                    col = -1;
-                    toFill = true;
-                }
-                else if (c == ' ' && toFill)
-                {
-                    board.Cells[col, row].IsAlive = false;
-                }
-                else if (toFill)
-                {
-                    board.Cells[col, row].IsAlive = true;
-                }
-                col++;
-            }
         }
     }
 }
